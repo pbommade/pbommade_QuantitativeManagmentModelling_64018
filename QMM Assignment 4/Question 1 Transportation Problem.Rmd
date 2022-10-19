@@ -1,0 +1,63 @@
+---
+title: "QMM Assignment"
+author: "Pavan Chaitanya"
+date: "2022-10-16"
+output:
+  word_document: default
+  html_document: default
+---
+
+```{r }
+# Question 1 : Formulate and solve the transportation Problem using R 
+Prob= matrix(c(22,14,30,600,100,
+               16,20,24,625,120,
+               80,60,70,"-","-"),ncol=5,byrow=TRUE)
+colnames(Prob)=c("Warehouse 1","Warehouse 2","Warehouse 3","Production cost","Production   capacity")
+rownames(Prob)=c("Plant A","Plant B","Demand")
+Prob
+
+# Min TC = 22x11 + 14x12 + 30x13 + 16x21 + 20x22 + 24x23
+
+# Subject to
+# supply Constraints
+    # x11 + x12 + x13 <= 100
+    # x21 + x22 + x23 <= 120
+# Demand Constraints
+    # x11 + x21 >= 80
+    # x12 + x22 >= 60
+    # x13 + x23 >= 70
+
+library(lpSolve)
+costs = matrix(c(622,614,630,0,
+                 641,645,649,0), ncol=4, byrow= TRUE)
+#Since Production capacity and Demand values are unbalanced, we are creating a dummy column of the value 10
+#column names and row names are mentioned as:
+colnames(costs) = c("Warehouse 1","Warehouse 2","Warehouse 3","dummy")
+rownames(costs) = c("Plant A","Plant 2")
+costs
+
+#Setting up row signs and production capacity values
+row.signs= rep("<=",2)
+row.rhs= c(100,120)
+
+#setting up column signs and demand values
+col.signs=rep(">=",4)
+col.rhs=c(80,60,70,10)
+
+#Running lptrans command to find the minimum cost
+lptrans <- lp.transport(costs, "min", row.signs, row.rhs, col.signs, col.rhs)
+
+#Variables for the given Prob
+lptrans$solution
+
+# Objective function is
+lptrans$objval
+
+# Therefore
+  # x12 = 60
+  # x13 = 40
+  # x21 = 80
+  # x23 = 30
+  # and objective function is 132790
+```
+
