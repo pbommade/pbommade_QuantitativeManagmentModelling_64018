@@ -1,0 +1,113 @@
+---
+title: "QMM Goal Programming"
+author: "Pavan Chaitanya"
+date: "2022-10-31"
+output:
+  word_document: default
+  html_document: default
+---
+
+Maximize Z = P - 6C - 3D, where
+P = total (discounted) profit over the life of the new products.
+
+C = change (in either direction) in the current level of employment.
+
+D = decrease (if any) in next year’s earnings from the current year’s level.
+
+Profit P is defined as:
+P = 20x1 +15x2 + 25x3
+
+Employment level is defined as :
+6x1 + 4x2 + 5x3 = 50
+
+Next year Earnings goal is defined as:
+8x1 + 7x2 + 5x3 >=75
+
+# 1) Model_Formulation:
+
+Let us consider
+y1 - Employment Level minus the target.
+
+y2 - Next Year Earnings minus the Target.
+
+y1+ - Penalty for employment level goal exceeding 50.
+
+y1- - Penalty for employment level goal decreasing below 50.
+
+y2+ - Exceed the next year earnings.
+
+y2- - Penalty for not reaching the next year earnings.
+
+y1 = 6x1 + 4x2 + 5x3 - 50.
+
+y2 = 8x1 + 7x2 + 5x3 -75
+
+# For Employment level goal
+y1 = y1+ - y1- where y1+, y1- >=0.
+
+y1+ - y1-= 6x1 + 4x2 + 5x3 - 50
+
+# For Next year earnings goal
+y2 = y2+ - y2- where y2+, y2- >=0.
+
+y2+ - y2- = 8x1 + 7x2 + 5x3 -75
+
+# Final Formulation is expressed as
+Max P = 20x1 +15x2 + 25x3.
+
+6x1 + 4x2 + 5x3 - (y1+ - y1-) = 50.
+
+8x1 + 7x2 + 5x3 - (y2+ - y2-) = 75
+
+Where, xj >=0, where j=1,2,3.
+
+       yi + >=0, where i= 1,2.
+
+       yi - >=0, where i= 1,2.
+
+# 2)Managements objective function Objective Function
+
+Maximize Z = P - 6C - 3D
+
+Objective function in terms of x1, x2, x3, y1+, y1- , y2+ and y2-.
+
+Max Z = 20x1 +15x2 + 25x3 - 6y1+ - 6y1- - 3y2-.
+ 
+        6x1 + 4x2 + 5x3 - (y1+ + y1-) = 50.
+        8x1 + 7x2 + 5x3 - (y2+ + y2-) = 75.
+                              Where,xj >=0 where j=1,2,3
+                                    yi + >=0 where i= 1,2
+                                    yi - >=0 where i= 1,2
+
+# 3) Formulate and solve the linear programming model
+
+```{r}
+library(lpSolveAPI)
+GoalProgram<- read.lp("C:/Users/Pavan Chaitanya/Documents/Emax1.lp")
+GoalProgram
+solve(GoalProgram)
+get.objective(GoalProgram)
+get.variables(GoalProgram)
+get.constraints(GoalProgram)
+```
+# Interpretation :
+
+The penalty is 225 if you are not satisfying the goals on the objective function.
+The results show that 
+                    x1 = 0. 
+                    
+                    x2 = 0.
+                    
+                    x3 = 15.
+                    
+                    y1+ = 25.
+                    
+                    y1− = 0.
+                    
+                    y2+ = 0.
+                    
+                    y2− = 0. 
+
+which explains the Next years Earnings (y2) expectations are fully satisfied.
+
+Emax need to produce 15 units of product 3 and none of product 1 and 2 to achieve 225 millions in profit.
