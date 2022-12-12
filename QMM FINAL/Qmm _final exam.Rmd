@@ -1,0 +1,239 @@
+---
+title: "QMM_FINALPROJECT"
+author: "Akhila sri"
+date: "2022-12-10"
+output:
+  word_document: default
+  pdf_document: default
+---
+
+***   FINAL EXAM  ***
+
+
+# The major objective of the present project, which involves creating groups for a class assignment, is to increase the likelihood or maximize the chance that each group will complete the project successfully.
+
+# There are 12 students in the class, and we will divide them into 4 groups of three each. The success of group projects can be impacted by the students' characteristics listed below:
+
+
+#GPA contains data on previous performance. The range is 0 to 4 and gender identifies if a student is a male or female. In our dataset, 0 denotes a man and 1 a female. Time spent on project represents how many hours each person put into the team project. In other words, it assesses whether each student initiated their own work on the project. The range of the Group Project dataset is 0 to 15 hours. Course Grade computes the points earned for the current course. It assesses how well the students are currently performing in the class.
+
+
+
+# The dataset for the group project that was developed in order to define, propose, and resolve a mathematical optimization model is as follows:
+
+```{r comment=NA, echo=FALSE}
+GP <- data.frame(Person = c(1:12), 
+                        GPA = c(3.5, 2.5, 3.0, 4.0, 3.3, 3.1, 3.8, 2.7, 3.2, 3.0, 3.3, 2.9), 
+                        Gender = c(0,1,1,1,0, 0,1,1,0,0,0,1), 
+                        Timespentonproject = c(5, 12, 4, 10, 9, 13, 8, 11, 3, 9, 15, 4), 
+                        CourseGrade = c(80, 70, 65, 40, 30, 50, 55, 25, 75, 60, 45, 75))
+GP
+```
+
+# The integer programming problem must be stated in terms of the following presumptions:
+
+# My notion of success is based on the current points each student has earned in the course. It is presented in the "Course Grade" field and has a scale of 0-100. I believe the "Course Grade" variable contributes to my definition of success because it is linked to the variables "Time spent on project" and "GPA." If a kid is struggling academically, there should be pressure on them to perform well on their final project, according to Time spent on project. If not, they could change the course. The course grade and GPA are associated because a student who has a poor GPA may not be motivated to do well in the program. A good GPA suggests that the student wants to give it their all-in order to succeed. Gender, on the other hand, is autonomous in that it has no bearing on whether a group will thrive or not. A good GPA suggests that the student wants to give it their all-in order to succeed. Gender, on the other hand, is autonomous in that it has no bearing on whether a group will thrive or not.
+
+# The data in the dataset for the group project that is shown above was selected at random. As a result, it is conceivable for some students to have a high GPA but perform poorly in their present classes, or the opposite. In this case, we will assume that the student was performing incredibly well in the program but that a personal problem is preventing him from functioning well in the current course. I thought that Groups 1, 2, and 4 required GPAs of 11, 10, 9, and 8, respectively. In addition, each group's project had to be worked on for a minimum of 40 hours, 35 hours, 30 hours, and 25 hours, respectively. The data in the dataset for the group project that is shown above was selected at random. This means that some students could have a high GPA but perform poorly in their present classes, or vice versa.
+# Based on the current points each participant has earned on the course, I define success. It has a scale of 0-100 and is provided in the "Course Grade" variable. Because it is connected to the variables "Time spent on project" and "GPA," I think the "Course Grade" variable is a factor that influences how I define success. If a student is not performing well on a project based on the time spent on it, that student should feel pressure to do well on the final project. If not, they could correct the direction. The "Course Grade" is related to the GPA in that if a student has an exceptionally low GPA, it is probably because they are not motivated to perform well in the program. A high GPA suggests that the student likes to put forth their best effort in order to succeed. Gender, on the other hand, is independent in that it has no bearing on whether a group will thrive or fail.
+
+# The information in the Group Project dataset that is displayed above was chosen at random. Due to this, it is possible that some students have a high GPA but perform poorly in their courses, or vice versa. In this instance, we will assume that the student was performing exceptionally well in the program but that his performance in the present course is being hampered by a personal issue.I thought the required GPA for Groups 1 and 4 was 11, 10, 9, and 8, respectively. Additionally, the project must have been worked on for 40 hours for group 1, 35 hours for group 2, 30 hours for group 3, and 25 hours for group 4.
+
+
+
+## II. Formulate the Problem
+
+Let:
+
+$x_{ij}$ = 1 if person $j$ belong to group $i$, and 0 if not.  
+
++ $j$ refers to person = 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 
+
++ $i$ means group = 1, 2, 3, 4 
+
+Objective function: 
+
+\begin{equation*}
+  \begin{split}
+    Max \: Z &= 80\sum_{i=1}^{4}x_{i1} + 70\sum_{i=1}^{4}x_{i2} + 65\sum_{i=1}^{4}x_{i3} +  40\sum_{i=1}^{4}x_{i4} + 30\sum_{i=1}^{4}x_{i5} + 50\sum_{i=1}^{4}x_{i6} \\
+    &+ 55\sum_{i=1}^{4}x_{i7} + 25\sum_{i=1}^{4}x_{i8} + 75\sum_{i=1}^{4}x_{i9} + 60\sum_{i=1}^{4}x_{i10} + 45\sum_{i=1}^{4}x_{i11} +75\sum_{i=1}^{4}x_{i12}
+    \end{split}
+\end{equation*}
+S.T: 
+
+      Groups
+
+$$ \sum_{j=1}^{12}x_{ij} = 3, where \: i = 1, 2, 3, 4 \: and  \: j = 1,2,3,4, 5, ... , 12$$
+
+ GPA
+
+$$ \sum_{j=1}^{12}GPA_{j}x_{ij}  \geq 12 - i, where \: i = 1, 2, 3, 4 \: and  \: j = 1,2,3,4, 5, ... , 12 $$
+
+Gender
+
+$$ \sum_{j=1}^{12} G_{j}x_{ij} \geq 1 ,  where \: G = gender, \: i = 1, 2, 3, 4 \: and  \: j = 1,2,3,4, 5, ... , 12 $$
+
+Time spent on project
+
+$$ \sum_{j=1}^{12}H_{j}x_{ij}  \geq 45-5i, where \: H = hours, \: i = 1, 2, 3, 4 \: and  \: j = 1,2,3,4, 5, ... , 12 $$
+
+Person must be part on one and only one group
+
+$$ \sum_{i=1}^{4}x_{ij}  = 1, where \: i = 1, 2, 3, 4 \: and  \: j = 1,2,3,4, 5, ... , 12 $$
+
+Integer constrain
+
+$$x_{ij} \: is \: integer, \: for \: i = 1, 2, 3, 4 \: and  \: j = 1,2,3,4, 5, ... , 12.$$
+
+
+
+
+
+## III. Solve the Problem
+
+First, we will create the dataset.
+```{r comment=NA}
+GroupProj <- data.frame(Person = c(1:12), 
+                  GPA = c(3.5, 2.5, 3.0, 4.0, 3.3, 3.1, 3.8, 2.7, 3.2, 3.0, 3.3, 2.9), 
+                  Gender = c(0,1,1,1,0, 0,1,1,0,0,0,1), 
+                  Timespentonproject = c(5, 12, 4, 10, 9, 13, 8, 11, 3, 9, 15, 4), 
+                  CourseGrade = c(80, 70, 65, 40, 30, 50, 55, 25, 75, 60, 45, 75))
+GroupProj
+```
+
+
+# Integer programming problem:
+
+```{r, results='hide', comment=NA}
+# Import the lpSolve package. 
+library(lpSolveAPI)
+# Create an lp object named lppoint with 0 constraints and 48 decision variables.
+lppoint <- make.lp(0, 48)
+# Set the problem as an integer programming
+set.type(lppoint, 48, "integer")
+# Set the objective function. 
+set.objfn(lppoint, rep(c(80,70,65,40,30,50,55,25,75,60,45,75),4))
+# Here we change the direction to set our problem to maximize.
+lp.control(lppoint,sense='max')
+```
+
+
+
+```{r, comment=NA}
+# Add the 12 constraints 
+add.constraint(lppoint, c(rep(1,12),rep(0,36)), "=", 3)
+add.constraint(lppoint, c(rep(0,12),rep(1,12),rep(0,24)), "=", 3)
+add.constraint(lppoint, c(rep(0,24),rep(1,12),rep(0,12)), "=", 3)
+add.constraint(lppoint, c(rep(0,36),rep(1,12)), "=", 3)
+add.constraint(lppoint, rep(GroupProj$GPA,4), ">=", 11)
+add.constraint(lppoint, rep(GroupProj$GPA,4), ">=", 10)
+add.constraint(lppoint, rep(GroupProj$GPA,4), ">=", 9)
+add.constraint(lppoint, rep(GroupProj$GPA,4), ">=", 8)
+add.constraint(lppoint, rep(GroupProj$Gender,4), ">=", 1)
+add.constraint(lppoint, rep(GroupProj$Gender,4), ">=", 1)
+add.constraint(lppoint, rep(GroupProj$Gender,4), ">=", 1)
+add.constraint(lppoint, rep(GroupProj$Gender,4), ">=", 1)
+add.constraint(lppoint, rep(GroupProj$Timespentonproject,4), ">=", 40)
+add.constraint(lppoint, rep(GroupProj$Timespentonproject,4), ">=", 35)
+add.constraint(lppoint, rep(GroupProj$Timespentonproject,4), ">=", 30)
+add.constraint(lppoint, rep(GroupProj$Timespentonproject,4), ">=", 25)
+add.constraint(lppoint, rep(c(1,rep(0,11)),4), "=", 1)
+add.constraint(lppoint, rep(c(rep(0,1),1,rep(0,10)),4), "=", 1)
+add.constraint(lppoint, rep(c(rep(0,2),1,rep(0,9)),4), "=", 1)
+add.constraint(lppoint, rep(c(rep(0,3),1,rep(0,8)),4), "=", 1)
+add.constraint(lppoint, rep(c(rep(0,4),1,rep(0,7)),4), "=", 1)
+add.constraint(lppoint, rep(c(rep(0,5),1,rep(0,6)),4), "=", 1)
+add.constraint(lppoint, rep(c(rep(0,6),1,rep(0,5)),4), "=", 1)
+add.constraint(lppoint, rep(c(rep(0,7),1,rep(0,4)),4), "=", 1)
+add.constraint(lppoint, rep(c(rep(0,8),1,rep(0,3)),4), "=", 1)
+add.constraint(lppoint, rep(c(rep(0,9),1,rep(0,2)),4), "=", 1)
+add.constraint(lppoint, rep(c(rep(0,10),1,rep(0,1)),4), "=", 1)
+add.constraint(lppoint, rep(c(rep(0,11),1),4), "=", 1)
+# To prove if the model solved
+solve(lppoint)
+```
+
+# As far as we can tell, the solver is returning 0, which indicates that a solution has been found.
+```{r, comment=NA}
+# It will give us the maximun success for the optimal solution.
+get.objective(lppoint)
+```
+
+# Here, we're trying to increase the likelihood that every group working on the project will succeed. As we can see, 670, the class's current aggregate course grade, represents the highest possibility of success.
+
+
+```{r, comment=NA}
+# It shows the constraints
+get.constraints(lppoint)
+```
+
+# It verifies that all restrictions have been met.
+
+```{r, comment=NA}
+# It will give us the optimal group number that each student belongs to.
+get.variables(lppoint)
+```
+
+# This outcome offers the ideal combination of group members for an effective class project. In other words, there can be no more than three 1s among the first 12 entries, and the rest must all be 0. It's because the "1"'s location will decide which group a person and group number belong to.
+ 
+
+# The GroupProject dataset is displayed in the output below along with the associated group number for each individual.
+
+
+```{r, comment=NA, echo=FALSE}
+# Add the group it belongs
+Group <- data.frame(Group = c(3,1,4,2,4,1,2,3,4,2,1,3))
+# Combine both dataframes
+GroupProj_assigned <- cbind(GroupProj, Group = Group$Group)
+# Show final result
+GroupProj_assigned
+```
+
+# We will plot the data by groups in order to determine the optimal group based on the results of the integer linear programming.
+
+```{r comment=NA, figures-side, fig.show="hold", out.width="50%", echo=FALSE}
+#Function to generate a continuous color palette
+mycolor <- colorRampPalette(c('red','turquoise'))
+#Add the color palette based on customer's balance
+mycolor2 <- mycolor(20)[as.numeric(cut(GroupProj_assigned$Group,breaks = 20))]
+plot(as.factor(GroupProj_assigned$Group), GroupProj_assigned$GPA, 
+     main="GPA's by Groups", 
+     xlab="Group", 
+     ylab="GPA", 
+     col = mycolor2,
+     cex.main=1.5,
+     cex.axis = 1.5,
+     pch = 15)
+plot(as.factor(GroupProj_assigned$Group), GroupProj_assigned$HoursWorkedProj, 
+     main="Hours Worked on the Project by Groups", 
+     xlab="Group", 
+     ylab="Hours Worked Proj", 
+     col = mycolor2,
+     cex.main=1.5,
+     cex.axis = 1.5,
+     pch = 15)
+plot(as.factor(GroupProj_assigned$Group), GroupProj_assigned$CurrentCourseGrade, 
+     main="Current Course Grade by Groups", 
+     xlab="Group", 
+     ylab="Current Course Grade", 
+     col = mycolor2,
+     cex.main=1.5,
+     cex.axis = 1.5,
+     pch = 15)
+``` 
+
+
+# Following a review of the prior box plots, the following is apparent:
+
+# Group 1 has put in the most hours on the project, while Group 4 has put in the least. It usually lasts for four hours.
+
+# The GPAs in Group 2 are higher. It is the only group where 100% of the data was focused in the narrow range between 8 and 10, in terms of the hours worked individually on the group project.
+
+# When it comes to the present course grade component, Group 3 has a wide range. It includes the dataset's minimum and maximum, which are outliers, in the same group.
+
+# We can observe from the data above that group 2 appears to contain the top kids all together.
+
+
+## IV. Summary
+
+# A mathematical optimization problem known as integer linear programming helps to discover the best solution while limiting the output to an integer. Because the aim function of this model is to optimize the success of allocating people to four separate groups, it closely suits the issue raised in this project.
